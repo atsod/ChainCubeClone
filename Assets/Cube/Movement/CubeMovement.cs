@@ -8,7 +8,9 @@ public class CubeMovement : MonoBehaviour
     public Rigidbody CubeRigidbody { private set; get; }
 
     private Transform _transform;
-    
+
+    private float _deltaSpeed;
+
     private Vector3 _movementDirection;
     private float _impulseSpeed;
 
@@ -21,6 +23,8 @@ public class CubeMovement : MonoBehaviour
         CubeRigidbody.useGravity = false;
 
         _transform = GetComponent<Transform>();
+
+        _deltaSpeed = 0.3f;
 
         _movementDirection = Vector3.forward;
         _impulseSpeed = 15f;
@@ -51,9 +55,8 @@ public class CubeMovement : MonoBehaviour
             if (!(float.IsNaN(delta.x) || float.IsNaN(delta.y) 
                 || float.IsInfinity(delta.x) || float.IsInfinity(delta.y)))
             {
-                _transform.position += (Vector3)delta * Time.deltaTime;
+                _transform.position += _deltaSpeed * Time.deltaTime * (Vector3)delta;
             }
-            
         }
         else if (!_isTouchPressed && _isPlayerMovingCube)
         {
@@ -77,7 +80,7 @@ public class CubeMovement : MonoBehaviour
 
     private void OnTouchPressed()
     {
-        if(!_isTouchPressed)
+        if (!_isTouchPressed)
         {
             CubeRigidbody.useGravity = false;
             _isTouchPressed = true;
@@ -86,7 +89,7 @@ public class CubeMovement : MonoBehaviour
 
     private void OnTouchReleased()
     {
-        if(_isTouchPressed)
+        if (_isTouchPressed)
         {
             CubeRigidbody.useGravity = true;
             _isTouchPressed = false;
